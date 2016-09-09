@@ -1,0 +1,25 @@
+{% extends "../base.html" %}
+
+{% block navigation %}
+
+{% include "data_nav.html" %}
+
+{% end %}
+
+{% block content %}
+
+
+
+<h3 class="breadcrumb">表：{{ currentTable }}
+    <a href="/opts/insert"> <span class="badge badge-success">新增数据</span></a>&nbsp
+    <a href="#" onclick="showDiv()"><span class="badge badge-success">代码生成</span></a>
+</h3>
+
+<div class="alert alert-info" style="visibility: visible" id="code">
+    <strong>参考代码！</strong>
+    <textarea style="width: 100%;height:1560px;resize: horizontal"  readonly="readonly">
+    {{ code }}
+    </textarea>
+</div>
+
+{% end %}

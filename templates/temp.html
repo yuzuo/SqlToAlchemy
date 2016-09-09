@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无线淘宝 - WindVane管理平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/ux/windvane/bootstrap.min.css" rel="stylesheet">
+    <link href="/ux/css/messenger.css" rel="stylesheet">
+    <link href="/ux/css/messenger-theme-future.css" rel="stylesheet">
+    	    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="http://h5.taobao.org/windvane/welcome.htm">WindVane管理平台</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    <a href="#" class="navbar-link"></a>
+                </p>
+                <ul class="nav">
+                    <li  class="active" ><a href="http://h5.taobao.org/windvane/index.htm">APP管理</a></li>
+                    <li ><a href="http://h5.taobao.org/windvane/cacheRule.htm">缓存规则管理</a></li>
+                    <li ><a href="http://h5.taobao.org/windvane/url.htm">通信规则管理</a></li>
+                    <li ><a href="http://h5.taobao.org/windvane/config.htm">全局配置</a></li>
+					<li ><a href="http://h5.taobao.org/windvane/plugin.htm">组件管理</a></li>
+					<li ><a href="generateApp.htm">生成APP</a></li>
+					<li ><a href="http://windvane.m.taobao.com/windvane.htm">WindVane</a></li>
+					<li ><a href="http://confluence.taobao.ali.com:8080/pages/viewpage.action?pageId=199709633">confluence</a></li>
+					<li ><a href="http://bbs.mopen.etao.com/thread.php?fid=72">社区</a></li>
+					<li ><a href="fast.htm">快速上手</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+                <div class="span3">
+	<div class="well sidebar-nav">
+		<ul class="nav nav-list">
+			<li class="nav-header">APP管理</li>
+			<li ><a href="index.htm">APP列表</a></li>
+			<li  class="active" ><a href="appReg.htm">APP注册</a></li>
+			<li ><a href="aboutReg.htm">关于注册</a></li>
+		</ul>
+	</div><!--/.well -->
+</div><!--/span-->        <div class="span9">
+        <h3 class="breadcrumb">注册你的APP</h3>
+
+		<div class="controls">
+        	  <input id="appName" type="text" placeholder="App 名称">
+		  <span class="help-inline">*</span>
+		</div>
+		<div class="controls">
+        	  <input id="appKey" type="text" placeholder="App Top Key">
+		  <span class="help-inline">*</span>
+		</div>
+		<div class="controls">
+        	  <input id="appAdmin" type="text" placeholder="App 负责人">
+		  <span class="help-inline">*</span>
+		</div>
+		<div style="width:60%;color:gray;font-size:12px;margin-bottom:10px;">
+			<li class="icon-info-sign"></li>
+			&nbsp;为了多人协作共同管理一个APP，注册允许一个AppKey被多人同时注册到自己名下，数据将共享
+		</div>
+		<div class="form-actions">
+            <button id="regBtn" onclick="WVBusiness.submitRegData();" class="btn btn-primary">注册</button>
+			&nbsp;&nbsp;
+			<button id="regBtn" onclick="window.location.href='index.htm';" class="btn">取消</button>
+        </div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+    <hr>
+    <footer>
+        <p>Copyright &copy; 2003-2013 Taobao.com 版权所有</p>
+</footer>
+    </div><!--/.fluid-container-->
+
+	<!-- Placed at the end of the document so the pages load faster -->
+<script src="/ux/windvane/jquery.min.js"></script>
+<script src="/ux/windvane/bootstrap.min.js"></script>
+
+<script src="/ux/windvane/underscore-min.js"></script>
+<script src="/ux/windvane/backbone-min.js"></script>
+<script src="/ux/windvane/messenger.min.js"></script>
+<script src="/ux/windvane/common.js"></script>
+	<script type="text/javascript" src="/ux/windvane/business.js"></script>
+
+</body>
+</html>
+

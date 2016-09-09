@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+
+{% block navigation %}
+
+{% include "data_nav.html" %}
+
+{% end %}
+
+{% block content %}
+
+
+<h3 class="breadcrumb">
+    url encode || decode
+</h3>
+
+<form>
+    <div class="" style="visibility: visible" id="code">
+        <strong>输入url：</strong>
+        <textarea style="width: 90%;height:80px;resize: horizontal" id="url">
+        </textarea>
+    </div>
+
+    <div class="" style="visibility: visible" id="code">
+        <strong>输出url：</strong>
+        <textarea style="width: 90%;height:80px;resize: horizontal" readonly="readonly" id="url">
+        </textarea>
+    </div>
+</form>
+{% end %}

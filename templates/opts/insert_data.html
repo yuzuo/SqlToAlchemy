@@ -1,0 +1,66 @@
+{% extends "../base.html" %}
+{% block navigation %}
+
+{% include "data_nav.html" %}
+
+{% end %}
+
+{% block content %}
+
+
+<div class="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>表：{{ currentTable }}!</strong> &nbsp&nbsp&nbsp请确认数据正确
+</div>
+
+<form class="form-horizontal" method="post" action="/ops/insert">
+    {% module xsrf_form_html() %}
+    <table class="table table-bordered table-hover">
+        <thead style="background: darkseagreen;">
+        <tr>
+            <th width="15%">字段名</th>
+            <th width="53%">value</th>
+            <th width="12%">字段类型</th>
+            <th width="10%">字段长度</th>
+            <th width="10%">是否为空</th>
+        </tr>
+        </thead>
+        <tbody id="tablebox">
+
+        {% for (filed,filed_type,file_length,file_not_null) in filed_info %}
+        {% if filed != 'id' and filed != "deleted" and filed !="created" and filed != "updated"%}
+        <tr>
+            <td>{{ filed }}</td>
+            <td>
+                {% if file_length >= 1000 %}
+                    <input type="textarea" size="150" id={{ filed }} name={{ filed }} style="height:80px;width:100%;"/></td>
+                {% else %}
+                    <input type="text" size="150" id={{ filed }} name={{ filed }}/></td>
+                {% end %}
+            <td>
+                {% if filed_type == 'VAR_STRING' %}
+                    varchar
+                {% else %}
+                    {{ filed_type }}
+                {% end %}
+            </td>
+            <td>{{ file_length }}</td>
+            <td>
+                {% if file_not_null ==0 %}
+                    <label><font color="red">不能为空</font></label>
+                {% else %}
+                    <label>可以为空</label>
+                {% end %}
+            </td>
+        </tr>
+        {% end %}
+        {% end %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" style=""><input type="submit" value="增加" class="btn btn-primary"/></td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+{% end %}

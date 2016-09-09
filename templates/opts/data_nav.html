@@ -1,0 +1,16 @@
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-tabs nav-stacked">
+            <li class="nav-header">数据表管理</li>
+            {% for table in tables %}
+
+                {% if table == currentTable %}
+                    <li class="active"><a href="/opts/{{ table }}">{{ table }}</a></li>
+                {% else %}
+                    <li><a href="/opts/{{ table }}">{{ table }}</a></li>
+                {% end %}
+            {% end %}
+        </ul>
+    </div>
+</div>
+
