@@ -35,17 +35,37 @@ class TableOPTSHomeHandler(BaseHandler):
         tables = t.get_tables_info()
         self.render("opts/opts_home.html", tables=tables, currentTable=None)
 
+
 class TableOPTSHandler(BaseHandler):
     """
 
     """
+
     def get(self, tableName, action=None):
         tables = t.get_tables_info()
         fileds = t.get_table_fileds(tableName)
         code = "can't create code any more"
         if tableName:
             self.set_cookie(name="current_table", value=tableName, expires_days=30)
-        self.render("opts/misc_data.html",tables=tables, fileds=fileds, currentTable=tableName)
+        self.render("opts/misc_data.html", tables=tables, fileds=fileds, currentTable=tableName)
+
+
+
+class CodeMakeHandler(BaseHandler):
+    def get(self, key):
+        tables = t.get_tables_info()
+        table_name = self.get_cookie(name="current_table")
+        code = ""
+        if table_name:
+
+            if key =="model":
+                code = s.make_model_code(table_name)
+            elif key=="dao":
+                code = s.make_dao_code(table_name)
+            elif key == "service":
+                code = s.make_service_code(table_name)
+        return self.render("opts/code_data.html", tables=tables, currentTable=table_name, code=code)
+
 
 
 

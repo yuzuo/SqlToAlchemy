@@ -6,7 +6,6 @@ import re
 __author__ = 'liubo'
 
 
-
 # db_host = 'localhost'
 # user_name = 'root'
 # user_pwd = 'ysletmein'
@@ -14,10 +13,11 @@ __author__ = 'liubo'
 #
 #
 def get_cur():
-    con = mdb.connect(db_host, user_name, user_pwd, db_name, connect_timeout=3, charset = "utf8")
+    con = mdb.connect(db_host, user_name, user_pwd, db_name, connect_timeout=3, charset="utf8")
     with con:
         cur = con.cursor()
         return cur
+
 
 #
 def get_tables_info():
@@ -32,22 +32,8 @@ def get_tables_info():
         return tables
     except:
         raise
-#
-#
-# def get_table_fileds(table_name, code_type=None):
-#     """
-#     获取表所有字段
-#     """
-#     cur = get_cur()
-#     cur.execute("SELECT * FROM %s" % table_name)
-#     desc = cur.description
-#     fileds = []
-#     for i in xrange(0, len(desc)):
-#         filed = desc[i][0]
-#         fileds.append(filed)
-#     return fileds
-#
-#
+
+
 def get_table_fileds_info(table_name, code_type=None):
     """
     获取表所有字段
@@ -66,25 +52,6 @@ def get_table_fileds_info(table_name, code_type=None):
             column_type, column_len = type, None
         fields.append((field, column_type, is_null, key, default, comment, column_len))
     return fields
-
-    # cur.execute("SELECT * FROM %s" % table_name)
-    # desc = cur.description
-    # fileds = []
-    # for i in xrange(0, len(desc)):
-    #     filed = desc[i][0]
-    #     filed_type = get_mysql_type(desc[i][1])
-    #     file_length = desc[i][3]
-    #     file_not_null = desc[i][-1]
-    #     info = (filed, filed_type, file_length, file_not_null)
-    #     fileds.append(info)
-    # return fileds
-
-
-# def get_mysql_comment(cursor, table_name, column_name):
-#     query = "SELECT COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_NAME = '%s' AND COLUMN_NAME = '%s'"%(table_name, column_name)
-#     cursor.execute(query)
-#     res = cursor.fetchone()
-#     return res[0]
 
 
 def get_mysql_type(type):

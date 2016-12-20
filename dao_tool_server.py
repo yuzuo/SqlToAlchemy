@@ -8,11 +8,10 @@ import tornado.web
 
 from tornado.options import define, options
 
-from handlers.search_handler import SearchHandler
 
 define("port", default=9800, help="run on the given port", type=int)
 
-from handlers.commonHandler import BaseHandler, CodeHandler, TableOPTSHomeHandler, TableOPTSHandler
+from handlers.commonHandler import BaseHandler, CodeHandler, TableOPTSHomeHandler, TableOPTSHandler, CodeMakeHandler
 
 
 class Application(tornado.web.Application):
@@ -21,6 +20,7 @@ class Application(tornado.web.Application):
             (r"/opts/(.*)", TableOPTSHandler),
             (r"/", TableOPTSHomeHandler),
             (r"/ops/code/([\w\W]*)", CodeHandler),
+            (r'/ops/alchemy/([\w\W]*)',CodeMakeHandler),
         ]
 
         settings = dict(

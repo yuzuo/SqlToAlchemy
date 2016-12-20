@@ -11,8 +11,12 @@
 
 
 <h3 class="breadcrumb">表：{{ currentTable }}
-    <a href="/opts/insert"> <span class="badge badge-success">新增数据</span></a>&nbsp
-    <a href="#" onclick="showDiv()"><span class="badge badge-success">代码生成</span></a>
+    <!--<a href="/opts/insert"> <span class="badge badge-success">新增数据</span></a>&nbsp-->
+    <!--<a href="#" onclick="showDiv()"><span class="badge badge-success">代码生成</span></a>-->
+    <a href="/ops/code/sqlalchemy" onclick="showDiv()"><span class="badge badge-success">sqlalchemy代码</span></a>
+    <a href="/ops/alchemy/model" onclick="showSqlalchemyDiv()"><span class="badge badge-success">model代码</span></a>
+    <a href="/ops/alchemy/dao" onclick="showSqlalchemyDiv()"><span class="badge badge-success">dao代码</span></a>
+    <a href="/ops/alchemy/service" onclick="showSqlalchemyDiv()"><span class="badge badge-success">service代码</span></a>
 </h3>
 
 <div class="alert alert-info" style="visibility: visible" id="code">

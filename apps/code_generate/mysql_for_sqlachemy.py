@@ -55,7 +55,7 @@ def make_do_code(table_name):
         # temp = "%s = Column(%s%s)"
         for type_item in type_map.keys():
             if column_type == type_item:
-                if field in ('gmt_created', 'gmt_modified') and column_type=='datetime':
+                if field in ('gmt_created', 'gmt_modified') and column_type == 'datetime':
                     s = "    %s = Column(%s, %s %s %s doc='%s')\n" % (
                         field, type_map.get(type_item), get_index(key), get_is_null(is_null), "default=now(),",
                         comment)
@@ -88,8 +88,45 @@ def get_dao_name(table_name=None):
     return get_class_name(table_name) + "Dao"
 
 
+# -------------------------------------------Svr---------------------------------------------------------
 def get_service_name(table_name=None):
     return get_class_name(table_name) + "Service"
+
+
+def make_svr_class_field(table_name=None):
+    """
+
+    :param table_name:
+    :return:
+    """
+    svr_name = get_service_name(table_name)
+    DAO_NAME = get_dao_name(table_name)
+    class_temp = p.get_svr_class_field.generate(class_name=svr_name, table_name=table_name, DAO_NAME=DAO_NAME)
+    return class_temp
+
+
+def make_get_svr_by_id(table_name):
+    return p._get_entry_service_by_id.generate(table_name=table_name)
+
+
+def make_get_svr_by_params(table_name):
+    return p._get_entry_service_first.generate(table_name=table_name)
+
+
+def make_get_svr_list_by_params(table_name):
+    return p._get_entry_service_list.generate(table_name=table_name)
+
+
+def make_add_svr_by_params(table_name):
+    return p._add_service_by_params.generate(table_name=table_name)
+
+
+def make_update_svr_by_id(table_name):
+    return p._update_service_by_params.generate(table_name=table_name)
+
+
+def make_del_svr_by_id(table_name):
+    return p._delete_service_by_id.generate(table_name=table_name)
 
 
 # -------------------------------------------DAO---------------------------------------------------------
@@ -170,15 +207,72 @@ def make_add_do_by_entry(table_name):
     return p._add_do_by_entry.generate(table_name=table_name)
 
 
+def make_model_code(table_name=None):
+    if not table_name:
+        return "table_name cant not be none"
+
+    buffer = StringIO.StringIO()
+
+    codecinfo = codecs.lookup("utf8")
+    s = codecs.StreamReaderWriter(buffer,
+                                  codecinfo.streamreader, codecinfo.streamwriter)
+
+    header = p._model_header.generate()
+    do_code = make_do_code(table_name)
+    s.writelines(header)
+    s.writelines(do_code)
+
+    s.seek(0)
+    tem = s.read()
+    s.close()
+    print tem
+    return tem
 
 
+def make_dao_code(table_name=None):
+    """
+    dao服务
+    :param table_name:
+    :return:
+    """
+    if not table_name:
+        return "table_name cant not be none"
+
+    buffer = StringIO.StringIO()
+
+    codecinfo = codecs.lookup("utf8")
+    s = codecs.StreamReaderWriter(buffer,
+                                  codecinfo.streamreader, codecinfo.streamwriter)
+
+    header = p._dao_header.generate()
+    dao_code = make_dao_class_filed(table_name=table_name)
+    bay_parms = make_get_do_by_params(table_name)
+    by_id = make_get_entry_by_id(table_name)
+    add_entry = make_add_do_by_entry(table_name)
+    add_parems = make_add_do_by_params(table_name)
+    update_by_parms = make_update_do_by_params(table_name)
+    delete_item = make_delete_do_by_params(table_name)
+
+    # ------ebd svr---
+    s.writelines(header)
+    s.writelines(dao_code.decode('utf8'))
+    s.writelines(bay_parms.decode('utf8'))
+    s.writelines(by_id.decode('utf8'))
+    s.writelines(add_entry.decode('utf8'))
+    s.writelines(add_parems.decode('utf8'))
+    s.writelines(update_by_parms.decode('utf8'))
+    s.writelines(delete_item.decode('utf8'))
+
+    s.seek(0)
+    tem = s.read()
+    s.close()
+    print tem
+    return tem
 
 
 def make_code(table_name=None):
     if not table_name:
         return "table_name cant not be none"
-
-    # items = get_table_fileds_info(table_name)
 
     buffer = StringIO.StringIO()
 
@@ -195,7 +289,15 @@ def make_code(table_name=None):
     add_parems = make_add_do_by_params(table_name)
     update_by_parms = make_update_do_by_params(table_name)
     delete_item = make_delete_do_by_params(table_name)
-
+    # svr
+    svr_code = make_svr_class_field(table_name=table_name)
+    svr_id = make_get_svr_by_id(table_name=table_name)
+    svr_first = make_get_svr_by_params(table_name=table_name)
+    svr_list = make_get_svr_list_by_params(table_name=table_name)
+    svr_add = make_add_svr_by_params(table_name=table_name)
+    svr_del = make_del_svr_by_id(table_name=table_name)
+    svr_edit = make_update_svr_by_id(table_name=table_name)
+    # ------ebd svr---
     s.writelines(header)
     s.writelines(do_code)
     s.writelines(dao_code.decode('utf8'))
@@ -205,6 +307,54 @@ def make_code(table_name=None):
     s.writelines(add_parems.decode('utf8'))
     s.writelines(update_by_parms.decode('utf8'))
     s.writelines(delete_item.decode('utf8'))
+    # svr
+    s.writelines(svr_code.decode('utf8'))
+    s.writelines(svr_id.decode('utf8'))
+    s.writelines(svr_first.decode('utf8'))
+    s.writelines(svr_list.decode('utf8'))
+    s.writelines(svr_add.decode('utf8'))
+    s.writelines(svr_del.decode('utf8'))
+    s.writelines(svr_edit.decode('utf8'))
+
+    s.seek(0)
+    tem = s.read()
+    s.close()
+    print tem
+    return tem
+
+
+def make_service_code(table_name=None):
+    if not table_name:
+        return "table_name cant not be none"
+
+    buffer = StringIO.StringIO()
+
+    codecinfo = codecs.lookup("utf8")
+    s = codecs.StreamReaderWriter(buffer,
+                                  codecinfo.streamreader, codecinfo.streamwriter)
+
+    header = p._svr_header.generate()
+
+
+    # svr
+    svr_code = make_svr_class_field(table_name=table_name)
+    svr_id = make_get_svr_by_id(table_name=table_name)
+    svr_first = make_get_svr_by_params(table_name=table_name)
+    svr_list = make_get_svr_list_by_params(table_name=table_name)
+    svr_add = make_add_svr_by_params(table_name=table_name)
+    svr_del = make_del_svr_by_id(table_name=table_name)
+    svr_edit = make_update_svr_by_id(table_name=table_name)
+    # ------ebd svr---
+    s.writelines(header)
+
+    # svr
+    s.writelines(svr_code.decode('utf8'))
+    s.writelines(svr_id.decode('utf8'))
+    s.writelines(svr_first.decode('utf8'))
+    s.writelines(svr_list.decode('utf8'))
+    s.writelines(svr_add.decode('utf8'))
+    s.writelines(svr_del.decode('utf8'))
+    s.writelines(svr_edit.decode('utf8'))
 
     s.seek(0)
     tem = s.read()

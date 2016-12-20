@@ -12,6 +12,49 @@ class {{class_name}}(Base):
 ''')
 
 
+_svr_header = template.Template(u"""# -*- coding: UTF-8 -*-
+# ------------------------------------------------------------------------------------
+# DB API SERVICE generate from hslab tools
+#
+# @auth: xxxx@xxx.com
+# ------------------------------------------------------------------------------------
+
+import traceback
+
+from base import BaseService
+""")
+
+
+_dao_header = template.Template(u"""# -*- coding: UTF-8 -*-
+# ------------------------------------------------------------------------------------
+# DB API SERVICE generate from hslab tools
+#
+# @auth: xxxx@xxx.com
+# ------------------------------------------------------------------------------------
+
+import traceback
+
+from sqlalchemy.sql.functions import now
+from dao.base_dao import BaseDAO
+""")
+
+_model_header = template.Template(u"""# -*- coding: UTF-8 -*-
+# ------------------------------------------------------------------------------------
+# DB API SERVICE generate from hslab tools
+#
+# @auth: xxxx@xxx.com
+# ------------------------------------------------------------------------------------
+
+import traceback
+
+from model.base import Base
+from sqlalchemy.sql.functions import now
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
+""")
+
+
+
+
 _class_header = template.Template(u"""# -*- coding: UTF-8 -*-
 # ------------------------------------------------------------------------------------
 # DB API SERVICE generate from hslab tools
@@ -39,19 +82,6 @@ class {{class_name}}(BaseDAO):
     def __init__(self, db):
         super({{class_name}}, self).__init__(db)
 """)
-
-
-
-#
-# get_service_class_field =template.Template(u"""
-# class {{class_name}}(BaseService):
-#     '''
-#     {{class_name}}实体对象
-#     '''
-#     def __init__(self, db):
-#         self.{{table_name}}_dao =
-# """)
-#
 
 
 
@@ -171,33 +201,77 @@ _add_do_by_entry = template.Template(u'''
 ''')
 
 
+
+
+
+# -----------------------------------SERVICE-------------------------------------------
+get_svr_class_field = template.Template(u"""
+class {{class_name}}(BaseService):
+    '''
+    {{class_name}}实体对象
+    '''
+    def __init__(self, db):
+        self.db = db
+        self.{{table_name}}_dao = {{DAO_NAME}}(db)
+""")
+
+
 # 获取一条记录 -->id
-# _get_entry_service_by_id = template.Template(u'''
-#     def get_{{table_name}}_by_id(self, entry_id):
-#         """
-#         根据id获取数据
-#         :param kwargs:
-#         :return:
-#         """
-#         return self.{{table_name}}_dao._get_{{table_name}}_by_id(id=entry_id).first()
-# ''')
-#
-# _get_entry_service_first = template.Template(u'''
-#     def get_{{table_name}}_first(self, **kwargs):
-#         """
-#         根据id获取数据
-#         :param kwargs:
-#         :return:
-#         """
-#         return self.{{table_name}}_dao._get_{{table_name}}_by_params(**kwargs).first()
-# ''')
-#
-# _get_entry_service_list = template.Template(u'''
-#     def get_{{table_name}}_list(self, **kwargs):
-#         """
-#         根据id获取数据
-#         :param kwargs:
-#         :return:
-#         """
-#         return self.{{table_name}}_dao._get_{{table_name}}_by_params(**kwargs).all()
-# ''')
+_get_entry_service_by_id = template.Template(u'''
+    def get_{{table_name}}_by_id(self, entry_id):
+        """
+        根据id获取数据
+        :param kwargs:
+        :return:
+        """
+        return self.{{table_name}}_dao._get_{{table_name}}_by_id(entry_id=entry_id)
+''')
+
+_get_entry_service_first = template.Template(u'''
+    def get_{{table_name}}_first(self, **kwargs):
+        """
+        根据参数获取一条数据
+        :param kwargs:
+        :return:
+        """
+        return self.{{table_name}}_dao._get_{{table_name}}_by_params(**kwargs).first()
+''')
+
+_get_entry_service_list = template.Template(u'''
+    def get_{{table_name}}_list(self, **kwargs):
+        """
+        根据参数获取数据列表
+        :param kwargs:
+        :return:
+        """
+        return self.{{table_name}}_dao._get_{{table_name}}_by_params(**kwargs).all()
+''')
+
+
+_add_service_by_params = template.Template(u'''
+    def add_{{table_name}}(self, **kwargs):
+        """
+        添加数据
+        :param kwargs:
+        :return:
+        """
+        return self.{{table_name}}_dao._add_item_by_params(**kwargs)
+''')
+
+_update_service_by_params = template.Template(u'''
+    def update_{{table_name}}_by_id(self, id, **kwargs):
+        """
+        根据id 修改数据对象
+        :param kwargs:
+        :return:
+        """
+        return self.{{table_name}}_dao._update_{{table_name}}_by_id(id,**kwargs)
+''')
+
+_delete_service_by_id = template.Template(u'''
+    def delete_{{table_name}}_by_id(self, id):
+        """
+        根据id 删除数据对象
+        """
+        return self.{{table_name}}_dao._delete_item_by_id(id)
+''')

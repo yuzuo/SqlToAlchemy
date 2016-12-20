@@ -262,7 +262,7 @@ def get_class_name(table_name):
     return servie_name
 
 
-def get_service_name(tablename):
+def get_service_name():
     return get_class_name() + "Service"
 
 
