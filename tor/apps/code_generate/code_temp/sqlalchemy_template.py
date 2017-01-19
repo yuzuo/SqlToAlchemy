@@ -11,7 +11,6 @@ class {{class_name}}(Base):
     __tablename__ = '{{table_name}}'
 ''')
 
-
 _svr_header = template.Template(u"""# -*- coding: UTF-8 -*-
 # ------------------------------------------------------------------------------------
 # DB API SERVICE generate from hslab tools
@@ -21,9 +20,8 @@ _svr_header = template.Template(u"""# -*- coding: UTF-8 -*-
 
 import traceback
 
-from base import BaseService
+from service.base import BaseService
 """)
-
 
 _dao_header = template.Template(u"""# -*- coding: UTF-8 -*-
 # ------------------------------------------------------------------------------------
@@ -35,7 +33,7 @@ _dao_header = template.Template(u"""# -*- coding: UTF-8 -*-
 import traceback
 
 from sqlalchemy.sql.functions import now
-from dao.base_dao import BaseDAO
+from dao.base import BaseDAO
 """)
 
 _model_header = template.Template(u"""# -*- coding: UTF-8 -*-
@@ -52,9 +50,6 @@ from sqlalchemy.sql.functions import now
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
 """)
 
-
-
-
 _class_header = template.Template(u"""# -*- coding: UTF-8 -*-
 # ------------------------------------------------------------------------------------
 # DB API SERVICE generate from hslab tools
@@ -63,11 +58,12 @@ _class_header = template.Template(u"""# -*- coding: UTF-8 -*-
 # ------------------------------------------------------------------------------------
 
 import traceback
-
-from model.base import Base
 from sqlalchemy.sql.functions import now
-from dao.base_dao import BaseDAO
+from model.base import Base
+from dao.base import BaseDAO
+from service.dao import BaseService
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
+
 """)
 
 
@@ -246,7 +242,6 @@ _get_entry_service_list = template.Template(u'''
         """
         return self.{{table_name}}_dao._get_{{table_name}}_by_params(**kwargs).all()
 ''')
-
 
 _add_service_by_params = template.Template(u'''
     def add_{{table_name}}(self, **kwargs):

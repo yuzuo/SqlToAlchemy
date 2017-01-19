@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 import os.path
+
 import tornado.auth
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
-
 from tornado.options import define, options
-
+from handlers.commonHandler import TableOPTSHandler, BaseHandler
+from handlers.commonHandler import TableOPTSHomeHandler
+from handlers.commonHandler import CodeHandler
+from handlers.commonHandler import CodeMakeHandler
 
 define("port", default=9800, help="run on the given port", type=int)
 
-from handlers.commonHandler import BaseHandler, CodeHandler, TableOPTSHomeHandler, TableOPTSHandler, CodeMakeHandler
 
 
 class Application(tornado.web.Application):

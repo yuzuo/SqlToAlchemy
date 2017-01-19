@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 from tornado.web import RequestHandler
-from apps.code_generate import mysql_for_tornado as t
-from apps.code_generate import mysql_for_sqlachemy as s
+
+from tor.apps.code_generate import mysql_for_sqlachemy as s
+from tor.apps.common.geration_tool import get_tables_info, get_table_fileds
 
 __author__ = 'shihs'
 
@@ -42,8 +43,8 @@ class TableOPTSHandler(BaseHandler):
     """
 
     def get(self, tableName, action=None):
-        tables = t.get_tables_info()
-        fileds = t.get_table_fileds(tableName)
+        tables = get_tables_info()
+        fileds = get_table_fileds(tableName)
         code = "can't create code any more"
         if tableName:
             self.set_cookie(name="current_table", value=tableName, expires_days=30)
@@ -53,7 +54,7 @@ class TableOPTSHandler(BaseHandler):
 
 class CodeMakeHandler(BaseHandler):
     def get(self, key):
-        tables = t.get_tables_info()
+        tables = get_tables_info()
         table_name = self.get_cookie(name="current_table")
         code = ""
         if table_name:
@@ -77,16 +78,16 @@ class CodeHandler(BaseHandler):
 
     def get(self, code_type='tornadb'):
 
-        if code_type == "tornadb":
-            tables = t.get_tables_info()
-            code = "can't create code any more"
-            table_name = self.get_cookie(name="current_table")
-            if table_name:
-                code = t.make_code(table_name, code_type=code_type)
-            self.render("opts/code_data.html", tables=tables, currentTable=table_name, code=code)
+        # if code_type == "tornadb":
+        #     tables = t.get_tables_info()
+        #     code = "can't create code any more"
+        #     table_name = self.get_cookie(name="current_table")
+        #     if table_name:
+        #         code = make_code(table_name, code_type=code_type)
+        #     self.render("opts/code_data.html", tables=tables, currentTable=table_name, code=code)
 
         if code_type == "sqlalchemy":
-            tables = t.get_tables_info()
+            tables = get_tables_info()
             code = "can't create code any more"
             table_name = self.get_cookie(name="current_table")
             if table_name:

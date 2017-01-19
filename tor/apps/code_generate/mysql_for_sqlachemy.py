@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
 import StringIO
-import apps.code_generate.code_temp.sqlalchemy_template as p
 import codecs
-from apps.code_generate.mysql_for_tornado import get_tables_info, get_class_name
-from apps.common.geration_tool import get_table_fileds_info
+
+from tor.apps.code_generate.code_temp import sqlalchemy_template as p
+from tor.apps.common.geration_tool import get_tables_info, get_table_fileds_info, get_do_name, get_service_name, \
+    get_dao_name
 
 
 def get_is_null(is_null):
@@ -79,18 +80,6 @@ def make_do_code(table_name):
     str_class.close()
     return s
 
-
-def get_do_name(table_name=None):
-    return get_class_name(table_name) + "Do"
-
-
-def get_dao_name(table_name=None):
-    return get_class_name(table_name) + "Dao"
-
-
-# -------------------------------------------Svr---------------------------------------------------------
-def get_service_name(table_name=None):
-    return get_class_name(table_name) + "Service"
 
 
 def make_svr_class_field(table_name=None):

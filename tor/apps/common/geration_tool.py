@@ -1,17 +1,26 @@
 # -*- coding:utf-8 -*-
-import MySQLdb as mdb
-from setting import db_host, user_name, user_pwd, db_name
 import re
+
+import MySQLdb as mdb
+
+from tor.settings import db_host, user_name, user_pwd, db_name
 
 __author__ = 'liubo'
 
 
-# db_host = 'localhost'
-# user_name = 'root'
-# user_pwd = 'ysletmein'
-# db_name = 'efood'
-#
-#
+def get_do_name(table_name=None):
+    return get_class_name(table_name) + "Do"
+
+
+def get_dao_name(table_name=None):
+    return get_class_name(table_name) + "Dao"
+
+
+# -------------------------------------------Svr---------------------------------------------------------
+def get_service_name(table_name=None):
+    return get_class_name(table_name) + "Service"
+
+
 def get_cur():
     con = mdb.connect(db_host, user_name, user_pwd, db_name, connect_timeout=3, charset="utf8")
     with con:
@@ -19,7 +28,6 @@ def get_cur():
         return cur
 
 
-#
 def get_tables_info():
     try:
         cur = get_cur()
@@ -32,6 +40,20 @@ def get_tables_info():
         return tables
     except:
         raise
+
+
+def get_table_fileds(table_name, code_type=None):
+    """
+    获取表所有字段
+    """
+    cur = get_cur()
+    cur.execute("SELECT * FROM %s LIMIT 10" % table_name)
+    desc = cur.description
+    fileds = []
+    for i in xrange(0, len(desc)):
+        filed = desc[i][0]
+        fileds.append(filed)
+    return fileds
 
 
 def get_table_fileds_info(table_name, code_type=None):
