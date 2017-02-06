@@ -33,7 +33,7 @@ class TableOPTSHomeHandler(BaseHandler):
     """
 
     def get(self):
-        tables = t.get_tables_info()
+        tables = get_tables_info()
         self.render("opts/opts_home.html", tables=tables, currentTable=None)
 
 

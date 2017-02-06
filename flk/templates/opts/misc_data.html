@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block navigation %}
+
+{% include "opts/data_nav.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<h3 class="breadcrumb">表：{{ currentTable }}
+    <a href="/ops/code/sqlalchemy" onclick="showDiv()"><span class="badge badge-success">sqlalchemy代码</span></a>
+    <a href="/ops/alchemy/model" onclick="showSqlalchemyDiv()"><span class="badge badge-success">model代码</span></a>
+    <a href="/ops/alchemy/dao" onclick="showSqlalchemyDiv()"><span class="badge badge-success">dao代码</span></a>
+    <a href="/ops/alchemy/service" onclick="showSqlalchemyDiv()"><span class="badge badge-success">service代码</span></a>
+</h3>
+
+
+<table class="table table-bordered table-hover">
+    <thead style="background: darkseagreen;">
+    <tr>
+        {% for filed in fields %}
+        <th>{{ filed }}</th>
+        {% endfor %}
+
+        {% if fields[0] == 'id' %}
+        <th algin="center">操作</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody id="tablebox">
+    </tbody>
+</table>
+
+
+<div class="pagination pagination-right ">
+    <ul>
+        <li><a href="#">«</a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li class="disabled"><a href="#">»</a></li>
+    </ul>
+</div>
+
+{% endblock %}
