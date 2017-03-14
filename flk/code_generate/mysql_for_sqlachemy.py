@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 import StringIO
 import codecs
+import os
 
 from flk.code_generate.code_temp import sqlalchemy_template as p
 from flk.common.geration_tool import get_tables_info, get_table_fileds_info, get_do_name, get_service_name, get_dao_name
@@ -26,7 +27,7 @@ def get_index(key):
 
 
 def get_default(default):
-    if default != None:
+    if default:
         return " default = %s, " % (default)
     else:
         return ""
@@ -78,7 +79,6 @@ def make_do_code(table_name):
     s = str_class.read()
     str_class.close()
     return s
-
 
 
 def make_svr_class_field(table_name=None):
@@ -232,7 +232,7 @@ def make_dao_code(table_name=None):
     s = codecs.StreamReaderWriter(buffer,
                                   codecinfo.streamreader, codecinfo.streamwriter)
 
-    header = p._dao_header.render()
+    header = p._dao_header.render(model_package=table_name + "_model", model_name=get_do_name(table_name))
     dao_code = make_dao_class_filed(table_name=table_name)
     bay_parms = make_get_do_by_params(table_name)
     by_id = make_get_entry_by_id(table_name)
@@ -321,7 +321,7 @@ def make_service_code(table_name=None):
     s = codecs.StreamReaderWriter(buffer,
                                   codecinfo.streamreader, codecinfo.streamwriter)
 
-    header = p._svr_header.render()
+    header = p._svr_header.render(dao_package=table_name + "_dao", dao_name=get_dao_name(table_name))
 
 
     # svr
@@ -349,6 +349,53 @@ def make_service_code(table_name=None):
     s.close()
     print tem
     return tem
+
+
+def make_act_dir(base_dir, dao_dir="dao"):
+    """
+
+    :param base_dir:
+    :param file_name:
+    :return:
+    """
+    my_dir = os.path.join(base_dir, dao_dir)
+    if not os.path.exists(my_dir):
+        os.mkdir(my_dir)
+    return my_dir
+
+
+def make_init_file(my_dir, category, file_name="__init__.py"):
+    """
+
+    :param my_dir:
+    :param file_name:
+    :return:
+    """
+    if not os.path.exists(os.path.join(my_dir, file_name)):
+        file_new_name = os.path.join(my_dir, file_name)
+        f = open(file_new_name, "w+")
+        f.write("# -*- coding:utf-8 -*-\n")
+        if category == 'model':
+            f.write(p._get_do_init_temp.render())
+        elif category == "dao":
+            f.write(p._get_dao_init_temp.render())
+        elif category == "service":
+            f.write(p._get_svr_init_temp.render())
+        f.close()
+
+
+def write_act_file(my_dir, file_name, content):
+    """
+
+    :param dao_dir:
+    :param file_name:
+    :return:
+    """
+    file_new_name = os.path.join(my_dir, file_name)
+    if not os.path.exists(file_new_name):
+        f = open(file_new_name, 'w+')
+        f.write(content.encode("utf-8").strip())
+        f.close()
 
 
 if __name__ == '__main__':

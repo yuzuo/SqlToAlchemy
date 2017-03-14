@@ -63,7 +63,7 @@ def get_table_fileds_info(table_name, code_type=None):
             column_type, column_len = re.search(pattern, type).groups(0)
         else:
             column_type, column_len = type, None
-        fields.append((field, column_type, is_null, key, default, comment, column_len))
+        fields.append((field, column_type, is_null, key, default if default else "", comment, column_len))
     return fields
 
 

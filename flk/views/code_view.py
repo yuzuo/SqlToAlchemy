@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
 from flask import render_template, make_response, request
-from flk.code_generate.mysql_for_sqlachemy import make_model_code, make_dao_code, make_service_code, make_code
+from flk.code_generate.mysql_for_sqlachemy import make_model_code, make_dao_code, make_service_code, make_code, \
+    make_act_dir, write_act_file, make_init_file
 from flk.common.geration_tool import get_tables_info, get_table_fileds
+from flk.config import base_dir
 
 __author__ = 'shenhai'
 from flask import Blueprint
@@ -13,7 +15,6 @@ api = Blueprint('api', __name__)
 def table_opts_home_handler():
     tables = get_tables_info()
     return render_template('opts/opts_home.html', tables=tables, currentTable=None)
-
 
 
 @api.route('/opts/<tableName>', methods=['GET'])
@@ -42,6 +43,24 @@ def code_make_handler(keymodel):
             code = make_service_code(table_name)
 
     return render_template("opts/code_data.html", tables=tables, currentTable=table_name, code=code)
+
+
+@api.route('/ops/package/<category>')
+def code_to_package(category):
+    tables = get_tables_info()
+    for table in tables:
+        if table:
+            if category == "model":
+                code = make_model_code(table)
+            elif category == "dao":
+                code = make_dao_code(table)
+            elif category == "service":
+                code = make_service_code(table)
+            file_name = "%s_%s.py" % (table, category)
+            my_dir = make_act_dir(base_dir, category)
+            make_init_file(my_dir, category)
+            write_act_file(my_dir, file_name, code)
+    return 'make dir and file success'
 
 
 @api.route('/ops/code/<code_type>')

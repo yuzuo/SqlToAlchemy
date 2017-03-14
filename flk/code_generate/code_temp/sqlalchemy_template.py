@@ -3,12 +3,31 @@ __author__ = 'binpo'
 
 from jinja2 import Template
 
+_get_do_init_temp = Template(u'''
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+''')
+
+_get_dao_init_temp = Template(u'''
+import logging
+class BaseDao(object):
+    def __init__(self, db):
+        self.db = db
+        # self.rdb = db
+        self.log = logging.getLogger(__file__)
+''')
+
+_get_svr_init_temp = Template(u'''
+class BaseService(object):
+    pass
+''')
+
 _get_do_name_temp = Template(u'''
 class {{class_name}}(Base):
     """
     DAO class
     """
-    __tablename__ = '{{table_name}}'
+    __tablename__ = '{{table_name}}'\n
 ''')
 
 _svr_header = Template(u'''
@@ -21,7 +40,8 @@ _svr_header = Template(u'''
 
 import traceback
 
-from service.base import BaseService
+from service import BaseService
+from dao.{{dao_package}} import {{dao_name}}
 ''')
 
 _dao_header = Template(u"""
@@ -35,7 +55,8 @@ _dao_header = Template(u"""
 import traceback
 
 from sqlalchemy.sql.functions import now
-from dao.base import BaseDAO
+from dao import BaseDao
+from model.{{model_package}} import {{model_name}}
 """)
 
 _model_header = Template(u"""
@@ -48,7 +69,7 @@ _model_header = Template(u"""
 
 import traceback
 
-from model.base import Base
+from model import Base
 from sqlalchemy.sql.functions import now
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
 """)
@@ -63,11 +84,10 @@ _class_header = Template(u"""
 
 import traceback
 from sqlalchemy.sql.functions import now
-from model.base import Base
-from dao.base import BaseDAO
-from service.dao import BaseService
+from model import Base
+from dao import BaseDao
+from service import BaseService
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
-
 """)
 
 
@@ -75,7 +95,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
 # 生成实体对象
 
 get_dao_class_filed = Template(u"""
-class {{class_name}}(BaseDAO):
+class {{class_name}}(BaseDao):
     '''
     {{class_name}}实体对象
     '''
