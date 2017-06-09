@@ -4,7 +4,7 @@ __author__ = 'shenhai'
 mysql_host = 'localhost'
 mysql_user = 'root'
 mysql_pwd = 'ysletmein'
-mysql_db = 'fsdb'
+mysql_db = 'ds_card_db'
 
 
-base_dir = "/Users/shenhai/JiuyeSoftWork/Apollo/"
+base_dir = "/Users/shenhai/AywWork/Minoan"

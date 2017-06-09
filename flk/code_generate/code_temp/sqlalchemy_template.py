@@ -71,7 +71,7 @@ import traceback
 
 from model import Base
 from sqlalchemy.sql.functions import now
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, Float, Date
 """)
 
 _class_header = Template(u"""
@@ -210,6 +210,7 @@ _add_do_by_entry = Template(u'''
         msg = '新增{}'
         try:
             entry.gmt_created = now()
+            entry.gmt_modified = now()
             entry.deleted = 0
             self.db.add(entry)
             self.db.commit()

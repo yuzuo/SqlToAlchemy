@@ -39,9 +39,10 @@ def make_do_code(table_name):
         'long': 'Integer',
         'varchar': 'String',
         'datetime': 'DateTime',
-        'tinyint': 'Boolean',
+        'tinyint': 'Integer',
         'float': 'Float',
-        'text': 'Text'
+        'text': 'Text',
+        'date': 'Date'
     }
 
     str_class = StringIO.StringIO()
@@ -59,6 +60,11 @@ def make_do_code(table_name):
                 if field in ('gmt_created', 'gmt_modified') and column_type == 'datetime':
                     s = "    %s = Column(%s, %s %s %s doc='%s')\n" % (
                         field, type_map.get(type_item), get_index(key), get_is_null(is_null), "default=now(),",
+                        comment)
+
+                elif field == 'deleted' or field.startswith('is_'):
+                    s = "    %s = Column(%s, %s %s %s doc='%s')\n" % (
+                        field, "Boolean", get_index(key), get_is_null(is_null), get_default(default),
                         comment)
 
 

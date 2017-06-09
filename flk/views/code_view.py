@@ -72,3 +72,7 @@ def code_handler(code_type):
         if table_name:
             code = make_code(table_name)
         return render_template('opts/code_data.html', tables=tables, currentTable=table_name, code=code)
+
+
+
+
